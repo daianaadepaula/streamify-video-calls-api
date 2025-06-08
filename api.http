@@ -1,0 +1,57 @@
+@baseUrl = http://localhost:5001/api
+
+GET {{baseUrl}}/auth/me
+
+### Signup
+
+@name createSignup
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "fullName": "Maria Araujo",
+	"email": "maria@email.com",
+	"password": "123456"
+}
+
+###
+
+@name login 
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+	"email": "maria@email.com",
+	"password": "123456"
+}
+
+###
+
+POST {{baseUrl}}/auth/logout
+
+###
+
+@authToken = {{login.response.headers.X-AuthToken}}
+
+###
+POST {{baseUrl}}/auth/onboarding
+Cookie: jwt={{authToken}}
+Content-Type: application/json
+
+{
+  "fullName": "Maria Araujo",
+  "bio": "Hey there! I want to learn Spanish. Let's practice",
+  "nativeLanguage": "Portuguese",
+  "learningLanguage": "Spanish",
+  "location": "Rio de Janeiro"
+}
+
+###
+
+GET {{baseUrl}}/users/
+
+###
+
+GET {{baseUrl}}/users/friends
+
+###

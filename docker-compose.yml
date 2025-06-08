@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongo-streamify
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: streamify_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - streamify-network
+
+  backend:
+    image: daianaadepaula/streamify-api:latest
+    container_name: backend-streamify
+    restart: always
+    ports:
+      - "5001:5001"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+    networks:
+      - streamify-network
+
+volumes:
+  mongo_data:
+
+networks:
+  streamify-network:
+    driver: bridge
